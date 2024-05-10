@@ -144,10 +144,25 @@ function pauseTimer() {
 function finishActivity() {
   $.ajax({
     url: `${url}/finish`,
-    type: "POST",
-    success: function (response) {
-      console.log("finalizado");
+    type: "GET",
+    xhrFields: {
+      responseType: 'blob' // Define o tipo de resposta como 'blob'
+    },
+    success: function (response, textStatus, xhr) {
+      console.log(response);
       paused = true
+
+      var filename = '';
+      var disposition = xhr.getResponseHeader('Content-Disposition');
+      if (disposition && disposition.indexOf('attachment') !== -1) {
+        var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        var matches = filenameRegex.exec(disposition);
+        if (matches != null && matches[1]) {
+          filename = matches[1].replace(/['"]/g, '');
+        }
+      }
+
+      saveAs(response, filename || 'arquivo.xlsx')
     },
     error: function (xhr, status, error) {
       console.log(error);

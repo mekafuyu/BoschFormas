@@ -241,14 +241,15 @@ app.get("/check-timer", (req, res) => {
   return res.send({startTime: startTime, leftTime: `${hours}:${minutes}:${seconds}`, paused: startPause ? true : false});
 });
 
-app.post("/finish", (req, res) => {
+app.get("/finish", async (req, res) => {
   finished = true;
   try {
-    saveExcel();    
+    var filename = await saveExcel();
+    console.log(filename)
+    return res.download("./" + filename, filename)
   } catch (error) {
-    res.status(500).send("Atividade finalizada, porém, o excel falhou.");
+    return res.status(500).send("Atividade finalizada, porém, o excel falhou.");
   }
-  res.send("Atividade finalizada.");
 });
 
 app.post("/reset", (req, res) => {
@@ -442,6 +443,7 @@ async function saveExcel() {
   
   await workbook.xlsx.writeFile(fileName);
   console.log(`Planilha salva em ${fileName}`);
+  return fileName
 }
 
 
