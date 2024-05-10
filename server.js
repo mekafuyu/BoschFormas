@@ -64,7 +64,7 @@ app.post("/ready", async (req, res) => {
   let code = await generate();
 
   competitors[code] = { name, dataNasc, done, time, realScore, ...score, tentativas, pieces, code, accessed };
-  console.log(code, name, realScore)
+  console.log("Novo jogador:", code, name, realScore)
 
   res.send({ message: "Dados recebidos com sucesso!", code: code });
 });
@@ -156,7 +156,6 @@ app.post("/scales/:code", (req, res) => {
     let plate1 = 0;
     let plate2 = 0;
 
-    console.log(bal)
     let temp = [
       competitors[code].realScore[1],
       competitors[code].realScore[2],
@@ -170,7 +169,6 @@ app.post("/scales/:code", (req, res) => {
       plate2 += bal[j+5] * weights[temp[j]];
       competitors[code].pieces += bal[j] + bal[j+5];
     }
-    console.log(plate1, plate2)
 
     if (plate1 > plate2) results.push(-1);
     else if (plate1 === plate2) results.push(0);
@@ -247,7 +245,6 @@ app.get("/finish", async (req, res) => {
   startTime = null
   try {
     var filename = await saveExcel();
-    console.log(filename)
     return res.download("./" + filename, filename)
   } catch (error) {
     return res.status(500).send("Atividade finalizada, porém, o excel falhou.");
@@ -292,7 +289,6 @@ app.post("/set-time", (req, res) => {
   if (typeof testDuration != 'number')
     return res.status(400).send("Valor inválido")
   testDuration = Number(time)
-  console.log(testDuration)
   return res.send({testDuration})
 })
 
@@ -305,17 +301,17 @@ app.post("/set-weigths/:target", (req, res) => {
     testWeights[1] = Number(w1) || testWeights[1];
     testWeights[0] = Number(w2) || testWeights[0];
     testWeights[2] = Number(w3) || testWeights[2];
+    console.log("Pesos do teste atualizados para:", weights)
     return res.send("Pesos do test atualizados");
   }
   if (target == "game")
   {
-    console.log(weights)
     weights[2] = Number(w1) || weights[2];
     weights[0] = Number(w2) || weights[0];
     weights[1] = Number(w3) || weights[1];
     weights[3] = Number(w4) || weights[3];
     weights[4] = Number(w5) || weights[4];
-    console.log(weights)
+    console.log("Pesos do jogo atualizados para:", weights)
     return res.send("Pesos do jogo atualizados");
   }
   
