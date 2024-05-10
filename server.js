@@ -63,7 +63,7 @@ app.post("/ready", async (req, res) => {
   let code = await generate();
 
   competitors[code] = { name, dataNasc, done, time, realScore, ...score, tentativas, pieces, code, accessed };
-  console.log(competitors[code])
+  console.log(code, name, realScore)
 
   res.send({ message: "Dados recebidos com sucesso!", code: code });
 });
