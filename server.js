@@ -28,6 +28,7 @@ var weights = [100, 200, 300, 500, 800];
 var showTimer = false
 var showTries = false
 var reset = false
+var testDuration = 3600000
 
 app.post("/ready", async (req, res) => {
   const { name, dataNasc, w1, w2, w3, w4, w5 } = req.body;
@@ -202,7 +203,7 @@ app.post("/start-timer", (req, res) => {
     console.log("Tempo encerrado.");
     finished = true;
     saveExcel();
-  }, 3600000);
+  }, testDuration);
 
   started = true;
   res.send({startTime: startTime, message: "Cronômetro de 1 hora iniciado."});
@@ -230,10 +231,10 @@ app.get("/check-timer", (req, res) => {
     elapsedTime -= Date.now() - startPause
   }
 
-  const remainingTime = Math.max(0, 3600000 - elapsedTime);
+  const remainingTime = Math.max(0, testDuration - elapsedTime);
 
-  const hours = Math.floor(remainingTime / 3600000);
-  const minutes = Math.floor((remainingTime % 3600000) / 60000);
+  const hours = Math.floor(remainingTime / testDuration);
+  const minutes = Math.floor((remainingTime % testDuration) / 60000);
   const seconds = Math.floor((remainingTime % 60000) / 1000);
 
   if (hours > 0)
@@ -286,6 +287,15 @@ app.get("/status/:code", (req, res) => {
 });
 
 
+app.post("/set-time", (req, res) => {
+  const { time } = req.body;
+  if (typeof testDuration != 'number')
+    return res.status(400).send("Valor inválido")
+  testDuration = Number(time)
+  console.log(testDuration)
+  return res.send({testDuration})
+})
+
 app.post("/set-weigths/:target", (req, res) => {
   const { w1, w2, w3, w4, w5 } = req.body;
   const { target } = req.params;  
@@ -321,13 +331,13 @@ app.get("/game/:code", (req, res) => {
   }
   competitors[code].accessed = true
 
-  res.render("Game", { data: data, defaultWeigth: weights[2], code, showTimer, showTries });
+  res.render("Game", { data: data, defaultWeigth: weights[2], code, showTimer, showTries, testDuration });
 });
 app.get("/test", (req, res) => {
   res.render("Test", { data: data, defaultWeigth: testWeights[1] });
 });
 app.get("/dashboard", (req, res) => {
-  res.render("Dashboard", { data: competitors, url: data.url, currWeigths: {weights, testWeights}, showTimer, showTries });
+  res.render("Dashboard", { data: competitors, url: data.url, startTime, currWeigths: {weights, testWeights}, showTimer, showTries, testDuration });
 });
 app.get("/finished", (req, res) => {
   res.render("Finished");

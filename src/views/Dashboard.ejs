@@ -16,6 +16,7 @@
 <body>
   <script>
     var url = "<%= url %>";
+    var testDuration = "<%= testDuration %>";
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <header>
@@ -32,7 +33,10 @@
           <img src="./assets/icons/bi.png" alt="" style="height: 30px; width: 30px; margin-right: 10px;">
         </a>
         
-        <button type="button" class="btn btn-danger me-3" data-bs-toggle="modal" data-bs-target="#changeWeigthModal" id="changeWeightButton">
+        <button type="button" class="btn btn-danger me-3<%= startTime ? " d-none" : ""%>" data-bs-toggle="modal" data-bs-target="#changeTimeModal" id="changeTimeButton">
+          Alterar tempo de prova
+        </button>
+        <button type="button" class="btn btn-danger me-3<%= startTime ? " d-none" : ""%>" data-bs-toggle="modal" data-bs-target="#changeWeigthModal" id="changeWeightButton">
           Alterar pesos
         </button>
 
@@ -71,7 +75,7 @@
       <div class="timeCounter">
         <ul class="list-group list-group-horizontal">
           <li class="list-group-item">Tempo Restante</li>
-          <li class="list-group-item"><span id="tempoRestante">1:00:00</span></li>
+          <li class="list-group-item"><span id="tempoRestante">--:--:--</span></li>
         </ul>
         <button id="toggleButtonStart" type="button" class="btn btn-success mx-1" onclick="toggleActivityStart()">Iniciar Prova</button>
         <button id="toggleButtonReset" type="button" class="btn btn-success mx-1" onclick="resetActivity()">Reiniciar Prova</button>
@@ -220,6 +224,35 @@
         </div>
         <%}%>
         
+        <div class="modal fade" id="changeTimeModal" tabindex="-1" aria-labelledby="changeTimeModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="changeTimeModalLabel">Alterar Tempo de Prova</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form action="post" name="form-update-time" id="form-update-time">
+                  <div class="input-group my-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Tempo em Segundos</span>
+                    <input
+                      type="number"
+                      value="<%= testDuration %>"
+                      class="form-control"
+                      name="time"
+                    />
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-light" id="saveTime">Salvar Alterações</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
         <!-- Modal -->
         <div class="modal fade" id="changeWeigthModal" tabindex="-1" aria-labelledby="changeWeigthModalLabel" aria-hidden="true">
           <div class="modal-dialog">

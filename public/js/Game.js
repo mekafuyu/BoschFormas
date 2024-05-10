@@ -79,10 +79,10 @@ function atualizarTempoRestanteFrontend() {
     return;
   const elapsedTime = (Date.now() - startTime)// - pauseTime;
 
-  const remainingTime = Math.max(0, 3600000 - elapsedTime);
+  const remainingTime = Math.max(0, testDuration - elapsedTime);
 
-  const horas = Math.floor(remainingTime / 3600000);
-  const minutos = Math.floor((remainingTime % 3600000) / 60000);
+  const horas = Math.floor(remainingTime / testDuration);
+  const minutos = Math.floor((remainingTime % testDuration) / 60000);
   const segundos = Math.floor((remainingTime % 60000) / 1000);
 
   const tempoFormatado = `${horas.toString().padStart(2, "0")}:${minutos

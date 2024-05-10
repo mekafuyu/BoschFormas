@@ -45,11 +45,13 @@ function toggleActivityStart() {
   if(hideBt) {
     document.getElementById("toggleButtonPause").classList.remove("d-none");
     document.getElementById("changeWeightButton").classList.add("d-none");
+    document.getElementById("changeTimeButton").classList.add("d-none");
     // document.getElementById("optionsButton").classList.add("d-none");
     hideBt = false
   } else {
     document.getElementById("toggleButtonPause").classList.add("d-none");
     document.getElementById("changeWeightButton").classList.remove("d-none");
+    document.getElementById("changeTimeButton").classList.remove("d-none");
     // document.getElementById("optionsButton").classList.remove("d-none");
     hideBt = true
   }
@@ -348,10 +350,10 @@ function atualizarTempoRestanteFrontend() {
     return
   const elapsedTime = (Date.now() - startTime) - pauseTime;
 
-  const remainingTime = Math.max(0, 3600000 - elapsedTime);
+  const remainingTime = Math.max(0, testDuration - elapsedTime);
 
-  const horas = Math.floor(remainingTime / 3600000);
-  const minutos = Math.floor((remainingTime % 3600000) / 60000);
+  const horas = Math.floor(remainingTime / testDuration);
+  const minutos = Math.floor((remainingTime % testDuration) / 60000);
   const segundos = Math.floor((remainingTime % 60000) / 1000);
 
   const tempoFormatado = `${horas.toString().padStart(2, "0")}:${minutos
@@ -381,6 +383,22 @@ $("#saveChanges").on('click', function() {
     data: $("#form-update-test").serialize(),
     success: function (response) {
       
+    },
+    error: function (xhr, status, error) {
+      console.log("Error:", error);
+    },
+  });
+})
+
+$("#saveTime").on('click', function() {
+
+  $.ajax({
+    url: `${url}/set-time`,
+    type: "POST",
+    data: $("#form-update-time").serialize(),
+    success: function (response) {
+      console.log(response)
+      testDuration = response.testDuration
     },
     error: function (xhr, status, error) {
       console.log("Error:", error);
