@@ -28,7 +28,7 @@ var weights = [100, 200, 300, 500, 800];
 var showTimer = false
 var showTries = false
 var reset = false
-var testDuration = 3600000
+var testDuration = 3600
 
 app.post("/ready", async (req, res) => {
   const { name, dataNasc, w1, w2, w3, w4, w5 } = req.body;
@@ -201,7 +201,8 @@ app.post("/start-timer", (req, res) => {
     console.log("Tempo encerrado.");
     finished = true;
     saveExcel();
-  }, testDuration);
+    clearInterval(timer)
+  }, testDuration * 1000);
 
   started = true;
   res.send({startTime: startTime, message: "Cronômetro de 1 hora iniciado."});
@@ -229,10 +230,10 @@ app.get("/check-timer", (req, res) => {
     elapsedTime -= Date.now() - startPause
   }
 
-  const remainingTime = Math.max(0, testDuration - elapsedTime);
+  const remainingTime = Math.max(0, (testDuration * 1000) - elapsedTime);
 
-  const hours = Math.floor(remainingTime / testDuration);
-  const minutes = Math.floor((remainingTime % testDuration) / 60000);
+  const hours = Math.floor(remainingTime / testDuration * 1000);
+  const minutes = Math.floor((remainingTime % testDuration * 1000) / 60000);
   const seconds = Math.floor((remainingTime % 60000) / 1000);
 
   if (hours > 0)
@@ -259,6 +260,7 @@ app.post("/reset", (req, res) => {
   pauseTime = 0
   finished = false
   competitors = {}
+  testDuration = 3600
 
   reset = true
 
@@ -289,6 +291,7 @@ app.post("/set-time", (req, res) => {
   if (typeof testDuration != 'number')
     return res.status(400).send("Valor inválido")
   testDuration = Number(time)
+  console.log("Novo tempo de prova:", testDuration)
   return res.send({testDuration})
 })
 

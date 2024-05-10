@@ -350,10 +350,10 @@ function atualizarTempoRestanteFrontend() {
     return
   const elapsedTime = (Date.now() - startTime) - pauseTime;
 
-  const remainingTime = Math.max(0, testDuration - elapsedTime);
+  const remainingTime = Math.max(0, (testDuration * 1000) - elapsedTime);
 
-  const horas = Math.floor(remainingTime / testDuration);
-  const minutos = Math.floor((remainingTime % testDuration) / 60000);
+  const horas = Math.floor(remainingTime / (testDuration * 1000));
+  const minutos = Math.floor((remainingTime % (testDuration * 1000)) / 60000);
   const segundos = Math.floor((remainingTime % 60000) / 1000);
 
   const tempoFormatado = `${horas.toString().padStart(2, "0")}:${minutos
@@ -397,7 +397,6 @@ $("#saveTime").on('click', function() {
     type: "POST",
     data: $("#form-update-time").serialize(),
     success: function (response) {
-      console.log(response)
       testDuration = response.testDuration
     },
     error: function (xhr, status, error) {
