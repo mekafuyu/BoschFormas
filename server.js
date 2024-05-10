@@ -457,14 +457,8 @@ async function generate() {
   return secretcode;
 }
 
-const PORT = process.env.PORT || 3000;
-
-app.use('/api', createProxyMiddleware({ 
-  target: `$http://disrct:etstech31415@rb-proxy-ca1.bosch.com:8080:${PORT}/`,
-  changeOrigin: true
-}));
-
+const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`http://${process.env.CURR_IP}:${PORT}/test`);
-  console.log(`http://${process.env.CURR_IP}:${PORT}/dashboard`);
+  console.log(`${process.env.CURR_IP}/test`);
+  console.log(`${process.env.CURR_IP}/dashboard`);
 });

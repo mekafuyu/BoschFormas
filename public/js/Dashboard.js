@@ -29,7 +29,7 @@ function resetActivity() {
   }
 
   $.ajax({
-    url: `http://${url}:3000/reset`,
+    url: `${url}/reset`,
     type: "POST",
     success: function (response) {
     },
@@ -86,7 +86,7 @@ function toggleActivityPause() {
 
 function atualizarTempoRestante() {
   $.ajax({
-    url: `http://${url}:3000/check-timer`,
+    url: `${url}/check-timer`,
     type: "GET",
     success: function (response) {
       $("#tempoRestante").text(response.leftTime);
@@ -115,7 +115,7 @@ function atualizarTempoRestante() {
 
 function startTimer() {
   $.ajax({
-    url: `http://${url}:3000/start-timer`,
+    url: `${url}/start-timer`,
     type: "POST",
     success: function (response) {
       startTime = response.startTime; 
@@ -129,7 +129,7 @@ function startTimer() {
 
 function pauseTimer() {
   $.ajax({
-    url: `http://${url}:3000/pause-timer`,
+    url: `${url}/pause-timer`,
     type: "GET",
     success: function (response) {
       pauseTime = response.pauseTime;
@@ -143,7 +143,7 @@ function pauseTimer() {
 
 function finishActivity() {
   $.ajax({
-    url: `http://${url}:3000/finish`,
+    url: `${url}/finish`,
     type: "POST",
     success: function (response) {
       console.log("finalizado");
@@ -157,7 +157,7 @@ function finishActivity() {
 
 setInterval(() => {
   $.ajax({
-    url: `http://${url}:3000/competitors`,
+    url: `${url}/competitors`,
     type: "GET",
     success: function (response) {
       var s = Date.now();
@@ -349,7 +349,7 @@ function atualizarTempoRestanteFrontend() {
 $("#saveChanges").on('click', function() {
 
   $.ajax({
-    url: `http://${url}:3000/set-weigths/game`,
+    url: `${url}/set-weigths/game`,
     type: "POST",
     data: $("#form-update-game").serialize(),
     success: function (response) {
@@ -361,7 +361,7 @@ $("#saveChanges").on('click', function() {
   });
 
   $.ajax({
-    url: `http://${url}:3000/set-weigths/test`,
+    url: `${url}/set-weigths/test`,
     type: "POST",
     data: $("#form-update-test").serialize(),
     success: function (response) {
@@ -375,7 +375,7 @@ $("#saveChanges").on('click', function() {
 
 $("#options input").on('click', function() {
   $.ajax({
-    url: `http://${url}:3000/setOptions`,
+    url: `${url}/setOptions`,
     type: "POST",
     data: $("#options").serialize(),
     success: function (response) {

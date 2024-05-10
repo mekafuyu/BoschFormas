@@ -7,9 +7,9 @@ const dateInput = $('#form-participant input[type="date"]');
 var code = null;
 
 function waitOnQueue() {
-  $.get(`http://${url}:3000/started`, function (data) {
+  $.get(`${url}/started`, function (data) {
     console.log(data);
-    if (data) window.location.replace(`http://${url}:3000/game/${code}`);
+    if (data) window.location.replace(`${url}/game/${code}`);
   });
 }
 
@@ -83,7 +83,7 @@ $(" #iniciar ").on("click", (e) => {
     modal.modal('hide')
 
     $.ajax({
-      url: `http://${url}:3000/ready`,
+      url: `${url}/ready`,
       type: "POST",
       data: $("#form-participant").serialize(),
       success: function (response) {

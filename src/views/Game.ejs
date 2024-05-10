@@ -290,7 +290,7 @@
   $(document).ready(function () {
     const reqWeights = (quantities) => {
       $.ajax({
-        url: `http://${url}:3000/scales/${code}`,
+        url: `${url}/scales/${code}`,
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({ quantities: quantities }),

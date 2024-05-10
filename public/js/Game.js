@@ -17,7 +17,7 @@ nameInput.on( "focusout", function() {
 })
 
 function end() {  
-  $.get(`http://${url}:3000/status/${code}`, function (data) {
+  $.get(`${url}/status/${code}`, function (data) {
     startTime = data.startTime
     if(startTime)
       timer.removeClass("d-none")
@@ -31,11 +31,11 @@ function end() {
       tries.addClass("d-none")
     tentativas.text(triesCount)
 
-    if (data.finished) window.location.replace(`http://${url}:3000/finished`);
+    if (data.finished) window.location.replace(`${url}/finished`);
   }).fail(function (jqXHR, textStatus, errorThrown) {
     console.log(jqXHR.status)
     
-  // window.location.replace(`http://${url}:3000/test`);
+  // window.location.replace(`${url}/test`);
   });
 }
 
@@ -46,11 +46,11 @@ function finish() {
   console.log(inputFinish)
   if (inputFinish == finishAtv) {
     $.ajax({
-      url: `http://${url}:3000/final-answer/${code}`,
+      url: `${url}/final-answer/${code}`,
       type: "PATCH",
       data: $("#form-res").serialize(),
       success: function (response) {
-        window.location.replace(`http://${url}:3000/finished`);
+        window.location.replace(`${url}/finished`);
       },
       error: function (xhr, status, error) {
         alert("ocorreu um erro")
@@ -63,7 +63,7 @@ function finish() {
 
 function updateWeights() {
   $.ajax({
-    url: `http://${url}:3000/update-weights/${code}`,
+    url: `${url}/update-weights/${code}`,
     type: "PATCH",
     data: $("#form-res").serialize(),
     success: function (response) {
