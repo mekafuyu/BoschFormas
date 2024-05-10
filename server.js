@@ -39,7 +39,7 @@ app.post("/ready", async (req, res) => {
   let time = "";
 
   let score = {
-    w1: w1 || 0,
+    w1: w1 || 300,
     w2: w2 || 0,
     w3: w3 || 0,
     w4: w4 || 0,
@@ -330,9 +330,6 @@ app.get("/dashboard", (req, res) => {
 });
 app.get("/finished", (req, res) => {
   res.render("Finished");
-});
-app.get("/home", (req, res) => {
-  res.render("Home");
 });
 app.get("/started", (req, res) => {
   res.send(started);
