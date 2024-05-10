@@ -243,6 +243,7 @@ app.get("/check-timer", (req, res) => {
 
 app.get("/finish", async (req, res) => {
   finished = true;
+  startTime = null
   try {
     var filename = await saveExcel();
     console.log(filename)
