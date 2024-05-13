@@ -37,10 +37,10 @@ app.post("/ready", async (req, res) => {
 
   let accessed = false;
   let done = false;
-  let time = "00:00:00";
+  let time = "";
 
   let score = {
-    w1: w1 || 300,
+    w1: w1 || weights[2],
     w2: w2 || 0,
     w3: w3 || 0,
     w4: w4 || 0,
@@ -243,6 +243,23 @@ app.get("/check-timer", (req, res) => {
 });
 
 app.get("/finish", async (req, res) => {
+  function formatTime(milliseconds) {
+    const hours = Math.floor(milliseconds / 3600000);
+    const minutes = Math.floor((milliseconds % 3600000) / 60000);
+    const seconds = Math.floor((milliseconds % 60000) / 1000);
+    return `${hours}:${minutes}:${seconds}`;
+  }
+
+  for (const code in competitors) {
+    if (competitors.hasOwnProperty(code)) {
+      const competitor = competitors[code];
+      if (!competitor.time) {
+        const elapsedTime = Date.now() - startTime;
+        competitor.time = formatTime(elapsedTime);
+      }
+    }
+  }
+  
   finished = true;
   startTime = null
   try {
