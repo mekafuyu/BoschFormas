@@ -37,7 +37,7 @@ app.post("/ready", async (req, res) => {
 
   let accessed = false;
   let done = false;
-  let time = "";
+  let time = "00:00:00";
 
   let score = {
     w1: w1 || 300,
@@ -104,10 +104,11 @@ app.patch("/final-answer/:code", (req, res) => {
 
   const elapsedTime = Date.now() - startTime;
 
-  const minutes = Math.floor(elapsedTime / 60000);
+  const hours = Math.floor(elapsedTime / 3600000);
+  const minutes = Math.floor((elapsedTime % 3600000) / 60000);
   const seconds = Math.floor((elapsedTime % 60000) / 1000);
 
-  competitors[code].time = `${minutes}:${seconds}`;
+  competitors[code].time = `${hours}:${minutes}:${seconds}`;
 
   res.send("OK");
 });
